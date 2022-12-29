@@ -6,17 +6,24 @@ function App() {
 		e.preventDefault();
 		var btm = document.getElementById("myform");
 		var f = new FormData(btm);
-		for(var p of f.entries()){
+		/*for(var p of f.entries()){
 			console.log(p);
-		}
-		fetch("http://127.0.0.1:5000/ping",{mode: 'no-cors', body: f, method: "post"})
+		}*/
+		fetch("http://127.0.0.1:5000/ping",{body: f, method: "post"})
 		.then(function(response){
-			console.log(response)
 			var data = response.json()
-			console.log(data)
-			setpair(data)
+			//console.log(data)
+			//console.log(JSON.stringify(data))
+			//setpair(data)
+			return data
+		})
+		.then(function(response){
+			console.log(response, "fetch")
+			//console.log(JSON.stringify(response))
+			setpair(response)
 		});
 		btm.reset();
+		console.log(pair, "state")
 	}
   
   return (
@@ -35,7 +42,18 @@ function App() {
 				<input type="button" onClick={handleSubmit} value="submit" />
 			</form>
 			
-			<iframe name="table"></iframe>
+			<iframe name="table">
+				<table>
+				<tbody>
+					<tr>
+						{pair.map(function(st, i){
+							console.log(i, st)
+							return <td key={i}>{st.s_id}</td>;
+						})}
+					</tr>
+				</tbody>
+				</table>
+			</iframe>
 		</div>
     </div>
   );
